@@ -11,16 +11,6 @@ const remove_step = 120;
 const new_fireworks_per_second = 3.5;
 const colors = ['red', 'blue', 'silver', 'green', 'gold'];
 
-//const colors = ['silver', 'gold'];
-
-// const colors = [
-//     '#af812c',
-//     '#c79f61',
-//     '#dcbe94',
-//     '#efdec8',
-//     '#ffffff',
-// ];
-
 const DEBUG = 0;
 var DEBUG_COLORS = ['green', 'red', 'orange', 'cyan', 'yellow', 'blue'];
 
@@ -75,18 +65,6 @@ class Spark {
         ctx.strokeStyle = this.color;
         ctx.stroke();
         ctx.globalAlpha = 1.0;
-        
-        // for (const p of this.path) {
-        //     draw_context(() => {
-        //         translate(p[0], p[1]);
-        //         scale(1, 1);
-        //         var k = (this.step - fade_start) / (fade_end - fade_start);
-        //         k = clamp(k, 0, 1);
-        //         ctx.globalAlpha = 1.0 - k;
-        //         square(this.color);
-        //         ctx.globalAlpha = 1.0;
-        //     });
-        // }
     }
 }
 
