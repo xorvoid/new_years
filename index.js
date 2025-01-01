@@ -1,6 +1,6 @@
 var canvas_width = 700;
 var canvas_height = 700;
-var background_color = 'black'; //'#06224a';
+var background_color = 'black';
 var fireworks = [];
 var ctx = null;
 const fps = 60;
@@ -10,6 +10,16 @@ const fade_end = 120;
 const remove_step = 120;
 const new_fireworks_per_second = 3.5;
 const colors = ['red', 'blue', 'silver', 'green', 'gold'];
+
+//const colors = ['silver', 'gold'];
+
+// const colors = [
+//     '#af812c',
+//     '#c79f61',
+//     '#dcbe94',
+//     '#efdec8',
+//     '#ffffff',
+// ];
 
 const DEBUG = 0;
 var DEBUG_COLORS = ['green', 'red', 'orange', 'cyan', 'yellow', 'blue'];
@@ -30,11 +40,12 @@ function render_frame() {
 
 class Spark {
     constructor(pos, vel, color) {
+        this.start = [pos[0], pos[1]];
         this.pos = pos
         this.vel = vel
         this.step = 0
         this.color = color;
-        this.path = []
+        
     }
 
     update() {
@@ -44,26 +55,38 @@ class Spark {
                 return;
             }
         
-            this.path.push([
-                this.pos[0], this.pos[1]
-            ]);
             this.pos[0] += this.vel[0]/fps;
             this.pos[1] += this.vel[1]/fps;
         }
     }
 
     draw() {
-        for (const p of this.path) {
-            draw_context(() => {
-                translate(p[0], p[1]);
-                scale(1, 1);
-                var k = (this.step - fade_start) / (fade_end - fade_start);
-                k = clamp(k, 0, 1);
-                ctx.globalAlpha = 1.0 - k;
-                square(this.color);
-                ctx.globalAlpha = 1.0;
-            });
-        }
+        var start = this.start;
+        var end = this.pos;
+
+        ctx.beginPath();
+        ctx.moveTo(start[0], start[1]);
+        ctx.lineTo(end[0], end[1]);
+
+        var k = (this.step - fade_start) / (fade_end - fade_start);
+        k = clamp(k, 0, 1);
+        ctx.globalAlpha = 1.0 - k;
+
+        ctx.strokeStyle = this.color;
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+        
+        // for (const p of this.path) {
+        //     draw_context(() => {
+        //         translate(p[0], p[1]);
+        //         scale(1, 1);
+        //         var k = (this.step - fade_start) / (fade_end - fade_start);
+        //         k = clamp(k, 0, 1);
+        //         ctx.globalAlpha = 1.0 - k;
+        //         square(this.color);
+        //         ctx.globalAlpha = 1.0;
+        //     });
+        // }
     }
 }
 
@@ -243,6 +266,6 @@ function draw_scene() {
 
     ctx.font = "78px Snell Roundhand";
     ctx.strokeStyle = '#baedf8';
-    ctx.strokeText("Happy New Year!", 100, canvas_height/2);
+    ctx.strokeText("Happy New Year!", 75, canvas_height/2);
 }
 
